@@ -1,0 +1,220 @@
+/* Light theme overrides. Keep palette and light-mode component tuning here. */
+.app-frame[data-theme="light"] {
+  --text: #182536;
+  --muted: #586a7d;
+  --blue: #1769aa;
+  --violet: #526a86;
+  --glass-opacity: .94;
+  --glass-blur: 0px;
+  --glass-saturation: 100%;
+  --glass-border-opacity: .9;
+  --glass-highlight-opacity: .35;
+  --glass-shadow: 0 8px 24px rgba(20, 43, 69, .08), 0 1px 3px rgba(20, 43, 69, .06);
+  --glass-tint: rgba(255, 255, 255, .96);
+  --glass-reflection: .025;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  color: var(--text);
+  background: #eef2f6;
+  color-scheme: light;
+  transition: background .25s ease, color .25s ease;
+}
+
+.app-frame[data-theme="light"] .app-animated-background {
+  opacity: .055;
+  filter: grayscale(1) saturate(.35);
+}
+.app-frame[data-theme="light"] .scan-line-overlay { opacity: .025; }
+.app-frame[data-theme="light"] .app-shell::before,
+.app-frame[data-theme="light"] .app-shell::after { display: none; }
+.app-frame[data-theme="light"] .app-shell {
+  color: #182536 !important;
+  text-shadow: none !important;
+}
+.app-frame[data-theme="light"] .app-shell,
+.app-frame[data-theme="light"] .app-shell button,
+.app-frame[data-theme="light"] .app-shell input,
+.app-frame[data-theme="light"] .app-shell select,
+.app-frame[data-theme="light"] .app-shell h1,
+.app-frame[data-theme="light"] .app-shell h2,
+.app-frame[data-theme="light"] .app-shell h3,
+.app-frame[data-theme="light"] .app-shell strong {
+  color: #182536 !important;
+  text-shadow: none !important;
+}
+
+.app-frame[data-theme="light"] .liquid-glass {
+  color: #182536;
+  border-top-color: #d7e0e9;
+  border-right-color: #d7e0e9;
+  border-bottom-color: #d7e0e9;
+  background: rgba(255, 255, 255, .96) !important;
+  box-shadow: 0 8px 24px rgba(20, 43, 69, .075), inset 0 1px 0 rgba(255, 255, 255, .9);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.app-frame[data-theme="light"] .liquid-glass::before { background: linear-gradient(180deg, rgba(255,255,255,.56), transparent 28%); }
+.app-frame[data-theme="light"] .liquid-glass::after {
+  border-top-color: rgba(255,255,255,.9);
+  border-left-color: rgba(255,255,255,.6);
+  border-right-color: rgba(93,127,161,.13);
+  opacity: .85;
+}
+.app-frame[data-theme="light"] .liquid-glass:hover {
+  border-top-color: #8eb9dc;
+  border-right-color: #8eb9dc;
+  border-bottom-color: #8eb9dc;
+  box-shadow: 0 12px 28px rgba(28, 82, 128, .12), 0 0 0 1px rgba(56, 132, 193, .12);
+}
+.app-frame[data-theme="light"] .liquid-glass:focus-within {
+  border-color: #6da8d4;
+  box-shadow: 0 0 0 3px rgba(36, 119, 183, .13), 0 8px 24px rgba(20, 43, 69, .08);
+}
+
+.app-frame[data-theme="light"] .app-sidebar,
+.app-frame[data-theme="light"] .app-navbar {
+  border-color: #d8e1ea;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 8px 24px rgba(20, 43, 69, .07), inset 0 1px 0 #fff;
+}
+.app-frame[data-theme="light"] .app-sidebar::after,
+.app-frame[data-theme="light"] .app-navbar::after {
+  border-color: rgba(122, 151, 180, .13);
+  background: linear-gradient(135deg, rgba(255,255,255,.65), transparent 28%);
+  box-shadow: none;
+}
+.app-frame[data-theme="light"] .app-sidebar nav button {
+  color: #526478 !important;
+  background: transparent !important;
+  border-left-color: transparent !important;
+}
+.app-frame[data-theme="light"] .app-sidebar nav button:hover {
+  color: #155d94 !important;
+  background: #edf5fb !important;
+  box-shadow: inset 0 0 0 1px #dceaf5;
+}
+.app-frame[data-theme="light"] .app-sidebar nav button[style*="border-left: 3px solid"] {
+  color: #155d94 !important;
+  background: #e9f3fb !important;
+  border-left-color: #2780bd !important;
+  box-shadow: inset 0 0 0 1px #d8eaf7;
+}
+.app-frame[data-theme="light"] .sidebar-brand,
+.app-frame[data-theme="light"] .sidebar-status,
+.app-frame[data-theme="light"] .sidebar-footer {
+  border-color: #e3e9ef !important;
+}
+.app-frame[data-theme="light"] .app-sidebar .sidebar-brand div[style*="color:"],
+.app-frame[data-theme="light"] .app-sidebar .sidebar-footer div[style*="color:"] {
+  color: #53677c !important;
+}
+.app-frame[data-theme="light"] .app-sidebar .sidebar-brand div[style*="color: #f1f5f9"] { color: #182536 !important; }
+.app-frame[data-theme="light"] .system-status { color: #12764e !important; }
+.app-frame[data-theme="light"] .system-status span { color: #12764e !important; }
+
+.app-frame[data-theme="light"] .app-main {
+  color: #182536 !important;
+  background: linear-gradient(180deg, rgba(249,251,253,.35), transparent 45%);
+  scrollbar-color: #b7c7d7 transparent;
+}
+.app-frame[data-theme="light"] .app-main h1,
+.app-frame[data-theme="light"] .app-main h2,
+.app-frame[data-theme="light"] .app-main h3 { color: #17283b; }
+.app-frame[data-theme="light"] .app-main [style*="color: #e2e8f0"],
+.app-frame[data-theme="light"] .app-main [style*="color: #f1f5f9"],
+.app-frame[data-theme="light"] .app-main [style*="color: #f4f8ff"] { color: #182536 !important; }
+.app-frame[data-theme="light"] .app-main [style*="color: #94a3b8"],
+.app-frame[data-theme="light"] .app-main [style*="color: #94a9ca"],
+.app-frame[data-theme="light"] .app-main [style*="color: #a9a"],
+.app-frame[data-theme="light"] .app-main [style*="color: #7185a8"],
+.app-frame[data-theme="light"] .app-main [style*="color: #7188ad"],
+.app-frame[data-theme="light"] .app-main [style*="color: #8194b2"],
+.app-frame[data-theme="light"] .app-main [style*="color: #7890b2"],
+.app-frame[data-theme="light"] .app-main [style*="color: #64748b"],
+.app-frame[data-theme="light"] .app-main [style*="color: #647a9d"],
+.app-frame[data-theme="light"] .app-main [style*="color: #4a6fa5"],
+.app-frame[data-theme="light"] .app-main [style*="color: #3d5a80"],
+.app-frame[data-theme="light"] .app-main [style*="color: #2a3f5f"] { color: #586a7d !important; }
+.app-frame[data-theme="light"] .app-main [style*="background: #0d1729"],
+.app-frame[data-theme="light"] .app-main [style*="background: #0d1"],
+.app-frame[data-theme="light"] .app-main [style*="background: #0f1e3a"],
+.app-frame[data-theme="light"] .app-main [style*="background: #0a"],
+.app-frame[data-theme="light"] .app-main [style*="background: #080d1a"] {
+  background-color: #f4f7fa !important;
+}
+.app-frame[data-theme="light"] .app-main .liquid-glass {
+  background: #fff !important;
+}
+.app-frame[data-theme="light"] .app-main input,
+.app-frame[data-theme="light"] .app-main textarea,
+.app-frame[data-theme="light"] .app-main select {
+  color: #182536 !important;
+  border-color: #cbd7e2 !important;
+  background-color: #fff !important;
+}
+.app-frame[data-theme="light"] .app-main input::placeholder,
+.app-frame[data-theme="light"] .app-main textarea::placeholder { color: #708196 !important; }
+.app-frame[data-theme="light"] .app-main .recharts-cartesian-axis-tick-value,
+.app-frame[data-theme="light"] .app-main .recharts-polar-angle-axis-tick-value,
+.app-frame[data-theme="light"] .app-main .recharts-legend-item-text { fill: #586a7d !important; color: #586a7d !important; }
+
+.app-frame[data-theme="light"] .topbar-search {
+  color: #53677c !important;
+  border-color: #d7e0e9 !important;
+  background: #f6f8fa !important;
+}
+.app-frame[data-theme="light"] .topbar-search span:last-child,
+.app-frame[data-theme="light"] .topbar-date { color: #53677c !important; }
+.app-frame[data-theme="light"] .topbar-live {
+  border-color: #b8e5d0 !important;
+  background: #edf9f3 !important;
+}
+.app-frame[data-theme="light"] .topbar-live span:last-child { color: #176b49 !important; }
+.topbar-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid rgba(159, 191, 220, .32);
+  border-radius: 8px;
+  color: #c8d9eb;
+  background: rgba(14, 30, 53, .58);
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.topbar-theme-toggle:hover { border-color: rgba(123, 197, 244, .65); background: rgba(31, 60, 94, .72); }
+.topbar-theme-toggle span:first-child { color: #a8dfff; font-size: 16px; }
+.app-frame[data-theme="light"] .topbar-theme-toggle {
+  border-color: #cbd8e4;
+  color: #254b6a !important;
+  background: #f5f8fb;
+}
+.app-frame[data-theme="light"] .topbar-theme-toggle:hover { border-color: #83afd1; background: #eaf3fa; }
+.app-frame[data-theme="light"] .topbar-theme-toggle span:first-child { color: #176eaa; font-size: 16px; }
+
+.app-frame[data-theme="light"] .log-search-field,
+.app-frame[data-theme="light"] .log-search-input,
+.app-frame[data-theme="light"] .log-stream,
+.app-frame[data-theme="light"] .log-row,
+.app-frame[data-theme="light"] .log-table-head {
+  color: #24364a;
+  background-color: #fff;
+}
+.app-frame[data-theme="light"] .log-row .log-time-column,
+.app-frame[data-theme="light"] .log-row .log-server-column,
+.app-frame[data-theme="light"] .log-row .log-service-column,
+.app-frame[data-theme="light"] .log-row .log-message-column { color: #3d5369; }
+.app-frame[data-theme="light"] .log-table-head { color: #315a79; background: #eef4f8; }
+
+@media (max-width: 900px) {
+  .app-frame[data-theme="light"] .topbar-theme-toggle { min-width: 38px; padding: 0 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-frame[data-theme="light"],
+  .app-frame[data-theme="light"] * { transition-duration: .01ms !important; }
+}

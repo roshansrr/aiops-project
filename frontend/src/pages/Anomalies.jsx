@@ -1,24 +1,14 @@
 import { useState, useEffect } from "react";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { api } from "../utils/api";
-import LiquidGlass, { GlassPanel, GlassStatCard, GlassAlert } from "../components/LiquidGlass";
+import LiquidGlass from "../components/LiquidGlass";
 
 
 const SEVERITY_CONFIG = {
-  CRITICAL: { color: "#ef4444", bg: "#1a0a0a", border: "#7f1d1d", icon: "🔴" },
-  HIGH: { color: "#f97316", bg: "#1a0e00", border: "#7c3a00", icon: "🟠" },
-  MEDIUM: { color: "#f59e0b", bg: "#1a1400", border: "#78490f", icon: "🟡" },
-  LOW: { color: "#22c55e", bg: "#0a1500", border: "#1a4a1a", icon: "🟢" },
-};
-
-const ISSUE_ICONS = {
-  MEMORY_LEAK: "💾",
-  CPU_SPIKE: "⚡",
-  DISK_FULL: "💿",
-  SECURITY_ATTACK: "🛡️",
-  PERFORMANCE_DEGRADATION: "🐢",
-  APPLICATION_ERROR: "💥",
-  UNKNOWN_ANOMALY: "❓",
+  CRITICAL: { color: "#6577ff", bg: "rgba(255, 74, 100, .12)", border: "rgba(255, 101, 122, .42)" },
+  HIGH: { color: "#ff9b62", bg: "rgba(255, 139, 82, .12)", border: "rgba(255, 155, 98, .42)" },
+  MEDIUM: { color: "#ffd166", bg: "rgba(255, 209, 102, .12)", border: "rgba(255, 209, 102, .42)" },
+  LOW: { color: "#6ee7ae", bg: "rgba(79, 220, 157, .12)", border: "rgba(110, 231, 174, .4)" },
 };
 
 export default function Anomalies() {
@@ -61,41 +51,63 @@ export default function Anomalies() {
   ] : [];
 
   return (
-    <div style={{ display: "flex", gap: 20, height: "calc(100vh - 120px)" }}>
+    <div className="anomalies-page" style={{ display: "flex", gap: 20, height: "calc(100vh - 120px)" }}>
       {/* Left: Anomaly List */}
       <div style={{ width: 380, display: "flex", flexDirection: "column", gap: 16, flexShrink: 0 }}>
         {/* Filter tabs */}
-        <div style={{ display: "flex", gap: 8, background: "transparent", padding: 6, borderRadius: 10, border: "1px solid #1a2d4a" }}>
+        <LiquidGlass className="anomaly-filter-bar" padding="6px">
           {["ALL", "CRITICAL", "HIGH", "MEDIUM", "LOW"].map(f => (
-            <button key={f} onClick={() => setFilter(f)} style={{
-              flex: 1, padding: "6px 4px", fontSize: 10, fontWeight: 600,
-              borderRadius: 6, border: "none", cursor: "pointer",
-              background: filter === f ? (SEVERITY_CONFIG[f]?.border || "#1a2d4a") : "transparent",
-              color: filter === f ? (SEVERITY_CONFIG[f]?.color || "#60a5fa") : "#4a6fa5",
-              letterSpacing: "0.03em",
-            }}>{f}</button>
+            <LiquidGlass
+              as="button"
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`anomaly-filter${filter === f ? " is-active" : ""}`}
+              padding="7px 4px"
+              style={{
+                width: "100%",
+                minWidth: 0,
+                minHeight: 36,
+                borderRadius: 7,
+                borderColor: filter === f ? (SEVERITY_CONFIG[f]?.border || "rgba(125, 211, 252, .45)") : "rgba(156, 196, 235, .12)",
+                color: filter === f ? (SEVERITY_CONFIG[f]?.color || "#9fe3ff") : "#a9d9f6",
+                background: filter === f ? (SEVERITY_CONFIG[f]?.bg || "rgba(56, 189, 248, .12)") : "rgba(8, 21, 42, .4)",
+                fontSize: 9,
+                fontWeight: 700,
+                whiteSpace: "nowrap",
+              }}
+            >{f}</LiquidGlass>
           ))}
-        </div>
+        </LiquidGlass>
 
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 8 }}>
-          {loading && <div style={{ color: "#4a6fa5", textAlign: "center", marginTop: 40 }}>Analyzing logs...</div>}
+          {loading && <div style={{ color: "#9acbf0", textAlign: "center", marginTop: 40 }}>Analyzing logs...</div>}
           {!loading && filtered.length === 0 && (
-            <div style={{ color: "#4a6fa5", textAlign: "center", marginTop: 40 }}>
-              <div style={{ fontSize: 32 }}>✅</div>
+            <div style={{ color: "#9acbf0", textAlign: "center", marginTop: 40 }}>
               <div style={{ marginTop: 8 }}>No anomalies detected</div>
             </div>
           )}
           {filtered.map(a => {
             const cfg = SEVERITY_CONFIG[a.severity] || SEVERITY_CONFIG.LOW;
             return (
-              <div key={a.id} onClick={() => setSelected(a)} style={{
-                padding: "14px 16px", background: selected?.id === a.id ? "#0f1e3a" : "#0d1729",
-                border: `1px solid ${selected?.id === a.id ? "#1e3a6a" : "#1a2d4a"}`,
-                borderLeft: `3px solid ${cfg.color}`, borderRadius: 10, cursor: "pointer",
-                transition: "all 0.15s",
-              }}>
+              <LiquidGlass
+                as="button"
+                key={a.id}
+                onClick={() => setSelected(a)}
+                className={`anomaly-item${selected?.id === a.id ? " is-selected" : ""}`}
+                padding="14px 16px"
+                style={{
+                  width: "100%",
+                  borderRadius: 10,
+                  borderLeft: `4px solid ${cfg.color}`,
+                  borderTopColor: selected?.id === a.id ? "rgba(151, 211, 255, .42)" : "rgba(155, 196, 255, .18)",
+                  borderRightColor: selected?.id === a.id ? "rgba(151, 211, 255, .3)" : "rgba(155, 196, 255, .18)",
+                  borderBottomColor: selected?.id === a.id ? "rgba(151, 211, 255, .3)" : "rgba(155, 196, 255, .18)",
+                  background: selected?.id === a.id ? "rgba(12, 37, 68, .9)" : "rgba(7, 18, 37, .78)",
+                  textAlign: "left",
+                  cursor: "pointer",
+                }}
+              >
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                  <span style={{ fontSize: 16 }}>{ISSUE_ICONS[a.issue_type] || "⚠️"}</span>
                   <span style={{ fontSize: 12, fontWeight: 700, color: cfg.color }}>
                     {a.issue_type.replace(/_/g, " ")}
                   </span>
@@ -108,17 +120,17 @@ export default function Anomalies() {
                 <div style={{ display: "flex", gap: 12 }}>
                   {[
                     { l: "CPU", v: `${a.log.cpu_usage}%` },
-                    { l: "MEM", v: `${a.log.memory_usage}%` },
+                    { l: "Memory", v: `${a.log.memory_usage}%` },
                     { l: "Score", v: a.anomaly_score },
                   ].map(m => (
                     <div key={m.l}>
-                      <div style={{ fontSize: 9, color: "#2a3f5f" }}>{m.l}</div>
-                      <div style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600 }}>{m.v}</div>
+                      <div style={{ fontSize: 9, color: "#8fc7ed" }}>{m.l}</div>
+                      <div style={{ fontSize: 12, color: "#c9eaff", fontWeight: 600 }}>{m.v}</div>
                     </div>
                   ))}
                 </div>
-                <div style={{ fontSize: 10, color: "#2a3f5f", marginTop: 6 }}>{a.log.server}</div>
-              </div>
+                <div style={{ fontSize: 10, color: "#8fc7ed", marginTop: 6 }}>{a.log.server}</div>
+              </LiquidGlass>
             );
           })}
         </div>
@@ -128,31 +140,31 @@ export default function Anomalies() {
       {selected && sc && (
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16, overflowY: "auto" }}>
           {/* Header */}
-          <div style={{
-            background: "transparent", border: `1px solid ${sc.border}`, borderRadius: 12, padding: 20,
+          <LiquidGlass className="anomaly-detail" padding="20px" style={{
+            borderColor: sc.border,
             borderTop: `3px solid ${sc.color}`,
+            borderRadius: 12,
           }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                  <span style={{ fontSize: 28 }}>{ISSUE_ICONS[selected.issue_type]}</span>
                   <div>
                     <div style={{ fontSize: 18, fontWeight: 700, color: sc.color }}>
                       {selected.issue_type.replace(/_/g, " ")}
                     </div>
-                    <div style={{ fontSize: 12, color: "#64748b" }}>{selected.log.server} · {selected.log.service}</div>
+                    <div style={{ fontSize: 12, color: "#a9d9f6" }}>{selected.log.server} · {selected.log.service}</div>
                   </div>
                 </div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: 11, color: "#4a6fa5" }}>Confidence</div>
+                <div style={{ fontSize: 11, color: "#9acbf0" }}>Confidence</div>
                 <div style={{ fontSize: 24, fontWeight: 800, color: sc.color }}>{selected.confidence}%</div>
               </div>
             </div>
 
-            <div style={{ marginTop: 12, padding: 12, background: "transparent", borderRadius: 8, border: "1px solid #1a2d4a" }}>
-              <div style={{ fontSize: 11, color: "#4a6fa5", marginBottom: 4 }}>RECOMMENDED ACTION</div>
-              <div style={{ fontSize: 13, color: "#94a3b8" }}>{selected.recommended_action}</div>
+            <div className="anomaly-recommendation" style={{ marginTop: 12, padding: 12, borderRadius: 8 }}>
+              <div style={{ fontSize: 11, color: "#9acbf0", marginBottom: 4 }}>RECOMMENDED ACTION</div>
+              <div style={{ fontSize: 13, color: "#c9eaff" }}>{selected.recommended_action}</div>
             </div>
 
             {selected.auto_fixable && (
@@ -161,57 +173,55 @@ export default function Anomalies() {
                 disabled={!!fixing}
                 style={{
                   marginTop: 14, padding: "10px 24px", fontSize: 13, fontWeight: 700,
-                  background: fixing ? "#1a2d4a" : "linear-gradient(135deg, #1d4ed8, #6d28d9)",
-                  color: fixing ? "#4a6fa5" : "white", border: "none", borderRadius: 8,
+                  background: fixing ? "#1a2d4a" : "linear-gradient(135deg, #087ca8, #1763b5)",
+                  color: fixing ? "#9acbf0" : "white", border: "none", borderRadius: 8,
                   cursor: fixing ? "not-allowed" : "pointer", width: "100%",
                 }}
               >
-                {fixing ? "⚡ Applying Auto-Fix..." : "⚡ Apply Auto-Fix Now"}
+                {fixing ? "Applying auto-fix..." : "Apply auto-fix"}
               </button>
             )}
-          </div>
+          </LiquidGlass>
 
           {/* Fix Result */}
           {fixResult && (
-            <div style={{
-              background: "#0a1f0a", border: "1px solid #1a4a1a", borderRadius: 12, padding: 20,
-            }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#22c55e", marginBottom: 12 }}>
-                ✅ Fix Applied Successfully
+            <LiquidGlass variant="success" className="anomaly-fix-result" padding="20px">
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#86efac", marginBottom: 12 }}>
+                Fix applied successfully
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {fixResult.steps?.map((step, i) => (
-                  <div key={i} style={{ display: "flex", gap: 8, fontSize: 12, color: "#4ade80" }}>
-                    <span style={{ color: "#16a34a" }}>✓</span> {step}
+                  <div key={i} style={{ display: "flex", gap: 8, fontSize: 12, color: "#b8f5d1" }}>
+                    <span style={{ color: "#86efac" }}>Done</span> {step}
                   </div>
                 ))}
               </div>
               {fixResult.freed_gb && (
-                <div style={{ marginTop: 10, padding: 8, background: "#0d2a0d", borderRadius: 6 }}>
-                  <span style={{ fontSize: 12, color: "#22c55e" }}>Freed {fixResult.freed_gb}GB of disk space</span>
+                <div style={{ marginTop: 10, padding: 8, background: "rgba(34, 197, 94, .1)", borderRadius: 6 }}>
+                  <span style={{ fontSize: 12, color: "#b8f5d1" }}>Freed {fixResult.freed_gb}GB of disk space</span>
                 </div>
               )}
-            </div>
+            </LiquidGlass>
           )}
 
           {/* Radar Chart */}
-          <div style={{ background: "transparent", border: "1px solid #1a2d4a", borderRadius: 12, padding: 20 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "#94a3b8", marginBottom: 12 }}>
+          <LiquidGlass className="anomaly-chart-panel" padding="20px">
+            <div style={{ fontSize: 13, fontWeight: 600, color: "#c9eaff", marginBottom: 12 }}>
               Anomaly Signature — Metric Fingerprint
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <RadarChart data={radarData}>
                 <PolarGrid stroke="#1a2d4a" />
-                <PolarAngleAxis dataKey="metric" tick={{ fill: "#64748b", fontSize: 11 }} />
+                <PolarAngleAxis dataKey="metric" tick={{ fill: "#a9d9f6", fontSize: 11 }} />
                 <Radar dataKey="value" stroke={sc.color} fill={sc.color} fillOpacity={0.15} strokeWidth={2} />
-                <Tooltip contentStyle={{ background: "transparent", border: "1px solid #1a2d4a", borderRadius: 8 }} />
+                <Tooltip contentStyle={{ background: "#081629", border: "1px solid #31577b", borderRadius: 8, color: "#d9f1ff" }} />
               </RadarChart>
             </ResponsiveContainer>
-          </div>
+          </LiquidGlass>
 
           {/* Raw Metrics */}
-          <div style={{ background: "transparent", border: "1px solid #1a2d4a", borderRadius: 12, padding: 20 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: "#94a3b8", marginBottom: 12 }}>Raw Metrics at Detection Time</div>
+          <LiquidGlass className="anomaly-metrics-panel" padding="20px">
+            <div style={{ fontSize: 13, fontWeight: 600, color: "#c9eaff", marginBottom: 12 }}>Raw metrics at detection time</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
               {[
                 { l: "CPU", v: `${selected.log.cpu_usage}%`, c: selected.log.cpu_usage > 85 ? "#ef4444" : "#3b82f6" },
@@ -219,15 +229,15 @@ export default function Anomalies() {
                 { l: "Disk", v: `${selected.log.disk_usage}%`, c: selected.log.disk_usage > 90 ? "#ef4444" : "#f59e0b" },
                 { l: "Errors", v: selected.log.error_count, c: selected.log.error_count > 20 ? "#ef4444" : "#10b981" },
                 { l: "Response", v: `${selected.log.response_time_ms}ms`, c: selected.log.response_time_ms > 2000 ? "#ef4444" : "#06b6d4" },
-                { l: "Failed Logins", v: selected.log.failed_logins, c: selected.log.failed_logins > 10 ? "#ef4444" : "#64748b" },
+                { l: "Failed Logins", v: selected.log.failed_logins, c: selected.log.failed_logins > 10 ? "#ef4444" : "#81d4fa" },
               ].map(m => (
-                <div key={m.l} style={{ padding: "10px 12px", background: "transparent", borderRadius: 8, border: "1px solid #1a2d4a" }}>
-                  <div style={{ fontSize: 10, color: "#4a6fa5" }}>{m.l}</div>
+                <div key={m.l} className="anomaly-metric" style={{ padding: "10px 12px", borderRadius: 8 }}>
+                  <div style={{ fontSize: 10, color: "#9acbf0" }}>{m.l}</div>
                   <div style={{ fontSize: 18, fontWeight: 700, color: m.c, marginTop: 2 }}>{m.v}</div>
                 </div>
               ))}
             </div>
-          </div>
+          </LiquidGlass>
         </div>
       )}
     </div>

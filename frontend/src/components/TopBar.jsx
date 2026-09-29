@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import LiquidGlass from "./LiquidGlass";
 
-export default function TopBar({ page }) {
+export default function TopBar({ page, theme = "dark", onToggleTheme }) {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
     const t = setInterval(() => setTime(new Date()), 1000);
@@ -28,6 +28,16 @@ export default function TopBar({ page }) {
         <div className="topbar-date" style={{ padding: "9px 12px", color: "#94a9ca", fontSize: 13, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
           {time.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })} · {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </div>
+        <button
+          className="topbar-theme-toggle"
+          type="button"
+          onClick={onToggleTheme}
+          aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+          title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
+        >
+          <span aria-hidden="true">{theme === "light" ? "◐" : "☼"}</span>
+          <span>{theme === "light" ? "Dark" : "Light"}</span>
+        </button>
         <div style={{
           width: 40, height: 40, borderRadius: "50%",
           background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",

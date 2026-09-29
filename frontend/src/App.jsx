@@ -9,6 +9,13 @@ import TopBar from "./components/TopBar";
 import Grainient from "./components/backgrounds/Grainient";
 export default function App() {
   const [page, setPage] = useState("dashboard");
+  const [theme, setTheme] = useState(() => localStorage.getItem("aiops-theme") === "light" ? "light" : "dark");
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    localStorage.setItem("aiops-theme", nextTheme);
+    setTheme(nextTheme);
+  };
 
   const pages = {
     dashboard: <Dashboard />,
@@ -19,9 +26,10 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="app-frame" data-theme={theme}>
       {/* Grainient background */}
       <div
+        className="app-animated-background"
         style={{
           position: "fixed",
           inset: 0,
@@ -95,7 +103,7 @@ Collapse Snippet
             overflow: "hidden",
           }}
         >
-          <TopBar page={page} />
+          <TopBar page={page} theme={theme} onToggleTheme={toggleTheme} />
 
           <main
             className="app-main"
@@ -109,6 +117,6 @@ Collapse Snippet
           </main>
         </div>
       </div>
-    </>
+    </div>
   );
 }

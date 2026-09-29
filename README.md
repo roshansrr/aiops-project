@@ -173,3 +173,4 @@ The project works **fully offline** without any external services:
 - Charts auto-refresh every 5 seconds
 
 Add Groq key only if you want live AI responses.
+

@@ -164,38 +164,36 @@ export default function Copilot() {
       )}
 
       {/* Input */}
-      <div style={{
-        background: "transparent", border: "1px solid #1a2d4a", borderTop: "none",
-        borderRadius: "0 0 12px 12px", padding: "14px 16px",
-      }}>
-        <div style={{
-          display: "flex", gap: 10, background: "transparent",
-          border: "1px solid #1a2d4a", borderRadius: 10, padding: "8px 8px 8px 16px",
-        }}>
+      <div className="copilot-composer-wrap">
+        <div className="copilot-composer">
+          <div className="copilot-composer-toolbar">
+            <span className="copilot-composer-label">Command Copilot</span>
+            <span className="copilot-composer-context">Live infrastructure context</span>
+          </div>
+          <div className="copilot-composer-row">
+            <button className="copilot-attach" type="button" aria-label="Attach a log or file">+</button>
           <input
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === "Enter" && !e.shiftKey && send()}
-            placeholder="Ask anything about your systems..."
+            placeholder="Ask about incidents, systems, or next steps..."
             disabled={loading}
-            style={{
-              flex: 1, background: "transparent", border: "none", outline: "none",
-              color: "#e2e8f0", fontSize: 13,
-            }}
+            aria-label="Ask AIOps Copilot"
           />
           <button
             onClick={() => send()}
             disabled={loading || !input.trim()}
-            style={{
-              padding: "8px 18px", borderRadius: 7, border: "none", cursor: "pointer",
-              background: input.trim() && !loading ? "linear-gradient(135deg, #1d4ed8, #6d28d9)" : "#1a2d4a",
-              color: input.trim() && !loading ? "white" : "#4a6fa5",
-              fontSize: 13, fontWeight: 600, transition: "all 0.15s",
-            }}
-          >Send ↵</button>
-        </div>
-        <div style={{ fontSize: 10, color: "#1a2d4a", marginTop: 6, textAlign: "center" }}>
-          Add GROQ_API_KEY to .env for full AI · Works in demo mode without it
+            className="copilot-send"
+            aria-label="Send prompt"
+          >
+            <span>{loading ? "Working" : "Send"}</span>
+            <span className="copilot-send-icon">&#8593;</span>
+          </button>
+          </div>
+          <div className="copilot-composer-footer">
+            <span>Press Enter to send</span>
+            <span className="copilot-secure-status"><i /> Secure session</span>
+          </div>
         </div>
       </div>
 
